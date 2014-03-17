@@ -1,0 +1,6 @@
+{
+  "id": "authorized_keys",
+  "keys": [
+    "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDfING5/Hyq16tEOASZEFQJ5nMu4pKo4o4jsv6gSbaKm8DHhKDroGsy4MlcKdAixRTn+LFvHUyjItcfHOehIzAIVSUD4cWehdY/VsfmusQfAT7UBq3RI//0qbyyrHxndbTXIcd6sCCWMXGzYK42wkbcyVXxzl6trC2fbKqX99iZBmYYuvKL2NXaon9qtn2RvDuVkog9TJPrJFse+nvhFbXXs3zmpZDOrJYIXaaucb6qhHSs+jn/YLrXSn8zoe33zjqdW33aQtVky5jyZwyCGhnPe4kfZgiVK+CX+1LkZH49BbWa48bzp8+qR5nf7baupj80NfyLyPjUzfc+/rDJhIcT testing@testing.test"
+  ]
+}
