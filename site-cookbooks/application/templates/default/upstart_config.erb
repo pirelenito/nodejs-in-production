@@ -1,0 +1,33 @@
+description "NodeJS Application Server"
+author "Paulo Ragonha"
+# Adapted from the Upstart script by Louis Chatriot (https://gist.github.com/3385102/9de6178ab838a3450fc04204cc244be0e0cab925)
+
+env SUPERVISOR_BIN=/opt/nodejs/bin/supervisor
+env APP_DIR=/opt/application/
+env WATCH=/opt/application/tmp/restart.txt
+env LOG_FILE=/var/log/application.log
+env RUN_AS=deploy
+
+env SCRIPT=<%= @script %>
+env NODE_ENV=<%= @node_env %>
+
+# Start service on startup, stop on shutdown
+start on runlevel [2345]
+stop on runlevel [016]
+
+# Respawn in case of a crash, with default parameters
+respawn
+
+script
+  # Make sure logfile exists and can be written by the user we drop privileges to
+  touch $LOG_FILE
+  chown $RUN_AS:$RUN_AS $LOG_FILE
+
+  chdir $APP_DIR
+
+  NODE_ENV=$NODE_ENV su -s /bin/sh -c 'exec "$0" "$@"' $RUN_AS -- $SUPERVISOR_BIN -w $WATCH -- $SCRIPT >> $LOG_FILE 2>&1
+end script
+
+post-start script
+  echo "===== App restarted =====" >> $LOG_FILE
+end script

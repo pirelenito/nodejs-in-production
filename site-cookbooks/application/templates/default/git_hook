@@ -1,0 +1,6 @@
+#!/bin/sh
+GIT_WORK_TREE=/opt/application
+export GIT_WORK_TREE
+git checkout -f
+npm install
+touch /opt/application/tmp/restart.txt
