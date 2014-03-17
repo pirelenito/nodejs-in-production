@@ -1,8 +1,10 @@
-# Node JS Application Server Provisioning
+# Node.js  Provisioning
 
-Sample provisioning scripts using chef-solo.
+Provisions a machine with **MongoDB** that accepts **Node.js** application deployment using **git hooks**.
 
-The main purpose of this project is to demonstrate how easy it is to create a provisioning project with custom cookbooks, instead of using complex third-party cookbooks via Berkshelf or Librarian.
+Once provisioned, you can push the application code to the machine and watch in run.
+
+The main purpose of this project is to demonstrate how easy it is to make the provisioning of a machine using custom cookbooks, instead of complex third-party cookbooks via Berkshelf or Librarian.
 
 You can check how each cookbook work and see how little code is required to install something like Nginx by simply relying on the default Ubuntu package.
 
@@ -75,3 +77,8 @@ git push deploy master
 ```
 
 Currently for it to work, it expects that the application server is executed via a `index.js` file in the project's root folder.
+
+##  Acknowledgment
+
+* [Louis Chatriot](https://github.com/louischatriot) for his Upstart script;
+* [Felipe Munhoz](https://github.com/fnmunhoz) (my chef mentor).
