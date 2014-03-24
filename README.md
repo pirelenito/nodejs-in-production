@@ -76,7 +76,12 @@ Then you can push the code and watch it works!
 git push deploy master
 ```
 
-Currently for it to work, it expects that the application server is executed via a `index.js` file in the project's root folder.
+The server expects that the application server is executed via a `index.js` file in `production` environment. But you can change that in the `roles/application.rb` file at:
+
+```ruby
+default_attributes 'node_env' => 'production',
+                   'node_start_script' => '/opt/application/index.js'
+```
 
 ##  Acknowledgment
 

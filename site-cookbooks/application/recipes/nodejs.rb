@@ -7,8 +7,8 @@ template '/etc/init/application.conf' do
   notifies :restart, 'service[application]'
 
   variables(
-    :node_env => 'production',
-    :script => '/opt/application/index.js'
+    :node_env => node['node_env'],
+    :script => node['node_start_script']
   )
 end
 
