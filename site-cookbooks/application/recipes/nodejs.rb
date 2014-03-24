@@ -1,10 +1,10 @@
-template "/etc/init/application.conf" do
-  source "upstart_config.erb"
+template '/etc/init/application.conf' do
+  source 'upstart_config.erb'
   mode 0644
-  owner "root"
-  group "root"
+  owner 'root'
+  group 'root'
 
-  notifies :restart, "service[application]"
+  notifies :restart, 'service[application]'
 
   variables(
     :node_env => 'production',
