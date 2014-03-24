@@ -1,4 +1,4 @@
-# Node.js in production
+# Node.js + MongoDB in production
 
 Get the **foundation to start developing** Node.js applications and the **tools to put it into production**.
 
@@ -20,9 +20,7 @@ And **in production** you will get a box with:
  * SSH setup with authorized_keys;
  * Application deployment support using [git hooks](http://git-scm.com/book/en/Customizing-Git-Git-Hooks).
 
-It should be a **simple** and solid foundation to get you started on Node.js development and server provisioning.
-
-All the cookbooks presented are very simple (not maxing 20 lines of code), demostrating that it can be possible to provision machines using Chef without the use of complex third-party cookbooks (Berkshelf or Librarian).
+All the cookbooks presented are very simple (**not maxing 30 lines of code**), demostrating that it is possible to provision machines using Chef without the use of complex third-party cookbooks (managed by Berkshelf or Librarian).
 
 You can check how each cookbook work and see how little code is required to install something like Nginx by simply relying on the default Ubuntu package.
 
