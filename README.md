@@ -1,6 +1,6 @@
-# Node.js development and production boxes
+# Node.js in production
 
-This repository provides the foundation to start developing Node.js applications.
+Get the **foundation to start developing** Node.js applications and the **tools to put it into production**.
 
 It uses [Vagrant](https://www.vagrantup.com) and [knife-solo](http://matschaffer.github.io/knife-solo/) to setup development and production boxes respectively.
 
@@ -16,6 +16,7 @@ And **in production** you will get a box with:
  * [Nginx](http://nginx.org) as the web server (acting as a proxy to the application);
  * [Node.js](http://nodejs.org);
  * [MongoDB](http://mongodb.org) setup only to accept local connections;
+ * [Upstart service](http://upstart.ubuntu.com) for the Node.js application using [node-supervisor](https://github.com/isaacs/node-supervisor);
  * SSH setup with authorized_keys;
  * Application deployment support using [git hooks](http://git-scm.com/book/en/Customizing-Git-Git-Hooks).
 
