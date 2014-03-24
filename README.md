@@ -1,74 +1,95 @@
-# Node.js  Provisioning
+# Node.js development and production boxes
 
-Provisions a machine with **MongoDB** that accepts **Node.js** application deployment using **git hooks**.
+This repository provides the foundation to start developing Node.js applications.
 
-Once provisioned, you can push the application code to the machine and watch in run.
+It uses [Vagrant](https://www.vagrantup.com) and [knife-solo](http://matschaffer.github.io/knife-solo/) to setup development and production boxes respectively.
 
-The main purpose of this project is to demonstrate how easy it is to make the provisioning of a machine using custom cookbooks, instead of complex third-party cookbooks via Berkshelf or Librarian.
+**During development** you will get a Vagrant box with:
+
+ * [Node.js](http://nodejs.org);
+ * [MongoDB](http://mongodb.org);
+ * [Genguis](http://genghisapp.com): an amazing MongoDB admin UI;
+ * [knife-solo](http://matschaffer.github.io/knife-solo/): utility to provision your production boxes.
+
+And **in production** you will get a box with:
+
+ * [Nginx](http://nginx.org) as the web server (acting as a proxy to the application);
+ * [Node.js](http://nodejs.org);
+ * [MongoDB](http://mongodb.org) setup only to accept local connections;
+ * SSH setup with authorized_keys;
+ * Application deployment support using [git hooks](http://git-scm.com/book/en/Customizing-Git-Git-Hooks).
+
+It should be a **simple** and solid foundation to get you started on Node.js development and server provisioning.
+
+All the cookbooks presented are very simple (not maxing 20 lines of code), demostrating that it can be possible to provision machines using Chef without the use of complex third-party cookbooks (Berkshelf or Librarian).
 
 You can check how each cookbook work and see how little code is required to install something like Nginx by simply relying on the default Ubuntu package.
 
-You will need [knife-solo](http://matschaffer.github.io/knife-solo/) installed before continuing.
+The Node.js **server must listen to port 3000** for the Nginx proxy and Vagrant port-forwarding to work.
 
-**THIS IS A WORK IN PROGRESS, SO IT MIGHT NOT WORK YET.**
+## Development with Vagrant
 
-## Preparing a new Machine
+To get started you will need [Virtual Box](https://www.virtualbox.org) and [Vagrant](https://www.vagrantup.com) installed. These are the only dependencies that require manual instalation, everything else is automated.
 
-You will need a Ubuntu box with root access. A good way of getting a machine is using a VPS provider, like [Digital Ocean](https://www.digitalocean.com).
+Once Vagrant is installed, you can start the development machine with:
 
-Once you get a machine, we need to prepare it before cooking our recipes. Using the knife-solo tool installed earlier:
+```shell
+vagrant up
+```
+
+This will download a [base box](https://docs.vagrantup.com/v2/boxes.html) from the internet and provision the machine using the recipes that are specified at the `roles/vagrant.rb` file.
+
+Once completed, you can log in the machine and start working.
+
+```shell
+vagrant ssh
+```
+
+For more information on Vagrant, please check its [excelent documentation](https://docs.vagrantup.com/v2/boxes.html).
+
+## Server provisioning with knife-solo
+
+Once you've got the first working version of your application, you can put it into production using the [knife-solo](http://matschaffer.github.io/knife-solo/) utility that is already installed inside the Vagrant development box.
+
+You will need a Ubuntu box with root access. A good way of getting a machine is using a VPS provider (like [Digital Ocean](https://www.digitalocean.com)).
+
+Once you've got the machine, we need to prepare it before cooking the recipes. Using the knife-solo tool it is easy as:
 
 ```shell
 knife solo prepare root@myRemoteMachineAddress
 ```
 
-## Configuring the data bags
+Pay attention to the `myRemoteMachineAddress`, change it to the machine address.
 
-Data bags is Chef way of storing **sensitive information**. It is usually **not a good idea to commit** the contents stored here.
+### Configuring the data bags
+
+Data bags is Chef's way of storing **sensitive information**, and it is usually **not a good idea to commit** its contents.
 
 The only data bag in this project is the one used to hold you public ssh key. Make sure to use the sample file as a reference to create your own `authorised_keys.json` file.
 
-## Cooking the recipes
+### Cooking the recipes
 
 Once chef is installed, we can cook the recipes.
 
 ```shell
-knife solo cook root@myRemoteMachineAddress roles/application.json
+knife solo cook root@myRemoteMachineAddress -r "role[application]"
 ```
 
-Pay attention to the *myRemoteMachineAddress*, change it to your machine address.
+The `role[application]` represents the role of this machine, or in other words, which cookbooks we will be running in it. You can check the `roles/application.rb` file to see how it works.
 
-The *roles/application.json* represents the role of this machine, or in other words, which cookbooks we will be running in it. You can check its content to see how it works.
+Once completed, you will have the machine ready to host the application.
 
-The important piece is the `run_list` attribute displayed bellow:
+### Application Deployment
 
-```json
-{
-  "run_list": [
-    "recipe[base]",
-    "recipe[ssh]",
-    "recipe[swap]",
-    "recipe[mongodb]",
-    "recipe[nodejs]",
-    "recipe[nginx]",
-    "recipe[application]",
-    "recipe[application::nginx]",
-    "recipe[application::nodejs]"
-  ]
-}
-```
-
-Once completed, you will have a machine with Nginx, NodeJS and MongoDB to host you application.
-
-## Deployment
-
-The deployment works via git-hooks. So once the server detects the push, it installs the dependencies and restarts the server.
+The deployment works via git-hooks. So once the server detects the push, it installs the dependencies (`npm install`) and restarts the server.
 
 To deploy a application in this shiny new server you need to add a new remote to your application repository.
 
 ```shell
 git remote add deploy deploy@myRemoteMachineAddress:/opt/application/.git
 ```
+
+As you can see, the application is located at the `/opt/application` server folder.
 
 Then you can push the code and watch it works!
 
