@@ -1,5 +1,7 @@
 # Node.js + MongoDB in production
 
+**THIS PROJECT IS DEPRECATED.**
+
 Get the **foundation to start developing** Node.js applications and the **tools to put it into production**.
 
 It uses [Vagrant](https://www.vagrantup.com) and [knife-solo](http://matschaffer.github.io/knife-solo/) to setup development and production boxes respectively.
